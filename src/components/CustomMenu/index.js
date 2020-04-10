@@ -44,6 +44,11 @@ const Menu = props => {
           primaryText="Puntos"
           onClick={onMenuClick}
         />
+        <MenuItemLink
+          to="/nodesmap"
+          primaryText="Mapa de nodos"
+          onClick={onMenuClick}
+        />
       </SubMenu>
     </div>
   );
