@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "leaflet": "^1.6.0",
+    "leaflet-control-geocoder": "^1.12.1",
     "prop-types": "^15.7.2",
     "ra-data-json-server": "^3.4.0",
     "ra-data-simple-rest": "^3.3.2",
