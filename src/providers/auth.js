@@ -1,6 +1,9 @@
 // import decodeJwt from 'jwt-decode';
 
 export default (baseUrl) => {
+  // Should be refactored outside auth provider
+  const parseResponse = (response) => response.data
+
   return {
     login: ({ username, password }) => {
       const request = new Request(`${baseUrl}/session`, {
@@ -17,7 +20,8 @@ export default (baseUrl) => {
         }
         return response.json();
       })
-      .then(({ renewal_token, token }) => {
+      .then((response) => {
+        const { token, renewal_token } = parseResponse(response)
         // const decodedToken = decodeJwt(token);
         localStorage.setItem('token', token);
         localStorage.setItem('renewal_token', renewal_token);
