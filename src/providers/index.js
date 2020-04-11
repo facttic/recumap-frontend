@@ -1,11 +1,12 @@
-import AuthProvider from './auth'
-import simpleRestProvider from 'ra-data-simple-rest';
+import createAuthProvider from './auth'
+import createDataProvider from './data'
 
 const { REACT_APP_API_URL } = process.env
 
-console.log(REACT_APP_API_URL)
+const baseUrl = `${REACT_APP_API_URL}/api`
 
-const DataProvider = simpleRestProvider(REACT_APP_API_URL)
+const AuthProvider = createAuthProvider(baseUrl)
+const DataProvider = createDataProvider(baseUrl)
 
 export {
   AuthProvider,

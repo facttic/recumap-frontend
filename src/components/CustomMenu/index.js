@@ -69,6 +69,19 @@ const Menu = props => {
           onClick={onMenuClick}
         />
       </SubMenu>
+      <SubMenu
+        handleToggle={() => setMenuMapa(!menuMapa)}
+        isOpen={menuMapa}
+        sidebarIsOpen={open}
+        name="Organizaciones"
+        icon={<MapIcon />}
+      >
+        <MenuItemLink
+          to="/orgs"
+          primaryText="Organizaciones"
+          onClick={onMenuClick}
+        />
+      </SubMenu>
     </div>
   );
 }
