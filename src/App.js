@@ -4,6 +4,11 @@ import './App.css';
 import { Admin, Resource } from 'react-admin';
 
 import { PointsList } from './components/Points';
+import {
+  ResourceList,
+  ResourcePost,
+  ResourceEdit
+} from './components/Resources';
 import { UserList } from './components/Users';
 import { OrgList } from './components/Orgs';
 import customRoutes from './customRoutes'
@@ -22,6 +27,12 @@ const App = () => (
     <Resource name="users" list={UserList} />
     <Resource name="Puntos" list={PointsList} />
     <Resource name="orgs" list={OrgList} />
+    <Resource
+      name="resources"
+      list={ResourceList}
+      edit={ResourceEdit}
+      create={ResourcePost}
+    />
   </Admin>
 );
 

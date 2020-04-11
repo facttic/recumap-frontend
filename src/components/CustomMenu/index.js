@@ -15,10 +15,29 @@ const Menu = props => {
   const { onMenuClick, open } = props;
   const [menuUsuarios, setMenuUsuarios] = useState(true);
   const [menuMapa, setMenuMapa] = useState(true);
+  const [menuRecursos, setMenuRecursos] = useState(true);
 
   return (
     <div>
       <DashboardMenuItem onClick={onMenuClick} style={{ width: "300px" }} />
+      <SubMenu
+        handleToggle={() => setMenuRecursos(!menuRecursos)}
+        isOpen={menuRecursos}
+        sidebarIsOpen={open}
+        icon={<Face />}
+        name="Recursos"
+      >
+        <MenuItemLink
+          to="/resources/list"
+          primaryText="Recursos"
+          onClick={onMenuClick}
+        />
+         <MenuItemLink
+          to="/resources/map"
+          primaryText="Recursos"
+          onClick={onMenuClick}
+        />
+      </SubMenu>
       <SubMenu
         handleToggle={() => setMenuUsuarios(!menuUsuarios)}
         isOpen={menuUsuarios}
@@ -41,7 +60,12 @@ const Menu = props => {
       >
         <MenuItemLink
           to="/points"
-          primaryText="Puntos"
+          primaryText="Hogares"
+          onClick={onMenuClick}
+        />
+        <MenuItemLink
+          to="/nodesmap"
+          primaryText="Mapa de hogares"
           onClick={onMenuClick}
         />
       </SubMenu>
