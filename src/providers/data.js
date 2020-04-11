@@ -58,8 +58,13 @@ export default (baseUrl) => {
         filter: JSON.stringify({ id: params.ids }),
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`;
+      const token = localStorage.getItem('token')
+      const headers = {
+        'Authorization': token,
+        // 'Access-Control-Expose-Headers': 'X-Total-Count'
+      }
       // return httpClient(url).then(({ json }) => ({ data: json }));
-      return axios.get(url)
+      return axios.get(url, { headers })
       .then(res => {
         console.log('GET MANY :: ', res)
         return { data: res.data }
