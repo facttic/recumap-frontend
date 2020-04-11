@@ -5,7 +5,7 @@ export default (baseUrl) => {
     login: ({ username, password }) => {
       const request = new Request(`${baseUrl}/session`, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ user: { email: username, password } }),
         headers: new Headers({
           'Content-Type': 'application/json'
         }),
