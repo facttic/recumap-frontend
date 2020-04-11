@@ -1,24 +1,28 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import './Map.css';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { Card, CardContent } from '@material-ui/core';
+import NodeData from '../Nodes/NodesData'
 
 const firstNode = {
-    geo: { lat: -34.586018936001786, lng: -58.48846435546876 }
+    geo: { lat: -34.586018936001786, lng: -58.48846435546876 },
+    name: 'name1'
 }
 
 const NodesMap = props => {
     const { nodeList } = [] | props;
     const [nodes, setNodes] = useState([firstNode]);
-    const [actualNode, setActualNode] = useState(true);
+    const [actualNode, setActualNode] = useState();
 
     const addMarker = (e) => {
         // markers.pop();
         const newNode = {
-            geo: e.latlng
+            geo: e.latlng,
+            name: 'name'
         }
         setNodes(nodes.concat(newNode))  
     }
@@ -46,14 +50,23 @@ const NodesMap = props => {
                         url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     />
                     {nodes.map((position, idx) =>
-                         <Marker key={`marker-${idx}`} position={position.geo}>
-                            <Popup>
-                                <span>name</span>
-                            </Popup>
+
+                         <Marker 
+                             key={`marker-${idx}`}
+                             position={position.geo} 
+                             onClick={() => { 
+                                 setActualNode(position);
+                             }}>
+                           
+                            <Tooltip> <span>{position.name}</span></Tooltip>
                          </Marker>
                        
                     )}
                 </Map>
+                { actualNode && (
+                    <NodeData node={actualNode}></NodeData>
+                  ) 
+                }
             </div>
         );
     }
