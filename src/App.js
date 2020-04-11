@@ -6,6 +6,7 @@ import jsonServerProvider from 'ra-data-json-server';
 
 import { PointsList } from './components/Points';
 import { UserList } from './components/Users';
+import { OrgList } from './components/Orgs';
 import customRoutes from './customRoutes'
 import PrivateHome from './components/PrivateHome'
 import AppLayout from './AppLayout'
@@ -19,12 +20,13 @@ const App = () => (
   <Admin
     authProvider={AuthProvider}
     customRoutes={customRoutes}
-    dataProvider={dataProvider}
+    dataProvider={DataProvider}
     dashboard={PrivateHome}
     layout={AppLayout}
   >
     <Resource name="users" list={UserList} />
     <Resource name="Puntos" list={PointsList} />
+    <Resource name="orgs" list={OrgList} />
   </Admin>
 );
 
