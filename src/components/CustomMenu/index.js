@@ -28,7 +28,12 @@ const Menu = props => {
         name="Recursos"
       >
         <MenuItemLink
-          to="/resources"
+          to="/resources/list"
+          primaryText="Recursos"
+          onClick={onMenuClick}
+        />
+         <MenuItemLink
+          to="/resources/map"
           primaryText="Recursos"
           onClick={onMenuClick}
         />
