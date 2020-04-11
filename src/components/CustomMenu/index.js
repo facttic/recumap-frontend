@@ -15,10 +15,24 @@ const Menu = props => {
   const { onMenuClick, open } = props;
   const [menuUsuarios, setMenuUsuarios] = useState(true);
   const [menuMapa, setMenuMapa] = useState(true);
+  const [menuRecursos, setMenuRecursos] = useState(true);
 
   return (
     <div>
       <DashboardMenuItem onClick={onMenuClick} style={{ width: "300px" }} />
+      <SubMenu
+        handleToggle={() => setMenuRecursos(!menuRecursos)}
+        isOpen={menuRecursos}
+        sidebarIsOpen={open}
+        icon={<Face />}
+        name="Recursos"
+      >
+        <MenuItemLink
+          to="/resources"
+          primaryText="Recursos"
+          onClick={onMenuClick}
+        />
+      </SubMenu>
       <SubMenu
         handleToggle={() => setMenuUsuarios(!menuUsuarios)}
         isOpen={menuUsuarios}

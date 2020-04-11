@@ -5,6 +5,7 @@ import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 import { PointsList } from './components/Points';
+import { ResourceList, ResourcePost, ResourceEdit } from './components/Resources';
 import { UserList } from './components/Users';
 import customRoutes from './customRoutes'
 import PrivateHome from './components/PrivateHome'
@@ -25,6 +26,7 @@ const App = () => (
   >
     <Resource name="users" list={UserList} />
     <Resource name="Puntos" list={PointsList} />
+    <Resource name="resources" list={ResourceList} edit={ResourceEdit} create={ResourcePost}/>
   </Admin>
 );
 
