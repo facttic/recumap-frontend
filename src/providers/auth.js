@@ -1,29 +1,43 @@
-export default {
-    // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
-    },
-    // called when the user clicks on the logout button
-    logout: () => {
-        localStorage.removeItem('username');
-        return Promise.resolve();
-    },
-    // called when the API returns an error
-    checkError: ({ status }) => {
-        if (status === 401 || status === 403) {
-            localStorage.removeItem('username');
-            return Promise.reject();
+// import decodeJwt from 'jwt-decode';
+
+export default (baseUrl) => {
+  return {
+    login: ({ username, password }) => {
+      const request = new Request(`${baseUrl}/session`, {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+      });
+      return fetch(request)
+      .then(response => {
+        if (response.status < 200 || response.status >= 300) {
+          throw new Error(response.statusText);
         }
-        return Promise.resolve();
+        return response.json();
+      })
+      .then(({ renewal_token, token }) => {
+        // const decodedToken = decodeJwt(token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('renewal_token', renewal_token);
+        // localStorage.setItem('permissions', decodedToken.permissions);
+      });
     },
-    // called when the user navigates to a new location, to check for authentication
+    logout: () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('permissions');
+      return Promise.resolve();
+    },
+    checkError: error => {
+      // ...
+    },
     checkAuth: () => {
-        return localStorage.getItem('username')
-            ? Promise.resolve()
-            : Promise.reject();
+      return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     },
-    // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
+    getPermissions: () => {
+      const role = localStorage.getItem('permissions');
+      return role ? Promise.resolve(role) : Promise.reject();
+    }
+  }
 };
