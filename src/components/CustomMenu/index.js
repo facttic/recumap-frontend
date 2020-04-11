@@ -60,12 +60,12 @@ const Menu = props => {
       >
         <MenuItemLink
           to="/points"
-          primaryText="Puntos"
+          primaryText="Hogares"
           onClick={onMenuClick}
         />
         <MenuItemLink
           to="/nodesmap"
-          primaryText="Mapa de nodos"
+          primaryText="Mapa de hogares"
           onClick={onMenuClick}
         />
       </SubMenu>

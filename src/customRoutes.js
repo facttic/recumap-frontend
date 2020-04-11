@@ -15,7 +15,7 @@ export default [
       }
     />,
     <Route exact path="/" component={PublicHome} />,
-    <Route exact path="/nodesmap" component={NodesMap} />
-    <Route exact path="/resources/map" component={PublicHome} />
+    <Route exact path="/nodesmap" component={NodesMap} />,
+    <Route exact path="/resources/map" component={NodesMap} />,
 
 ];
