@@ -3,7 +3,7 @@ import './App.css';
 
 import { Admin, Resource } from 'react-admin';
 
-import { HouseEdit, HouseList, HouseShow } from './components/Houses';
+import { HouseEdit, HouseList, HouseShow, HouseCreate } from './components/Houses';
 import {
   ResourceList,
   ResourcePost,
@@ -31,6 +31,7 @@ const App = () => (
       edit={HouseEdit}
       list={HouseList}
       show={HouseShow}
+      create={HouseCreate}
     />
     <Resource name="orgs" list={OrgList} />
     <Resource
