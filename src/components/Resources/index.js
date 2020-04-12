@@ -4,14 +4,10 @@ import {
   Edit,
   List,
   Datagrid,
-  DateInput,
-  DateField,
-  EditButton,
   NumberInput,
   SimpleForm,
   TextField,
   TextInput,
-  EmailField,
   Show,
   SimpleShowLayout
 } from 'react-admin';
