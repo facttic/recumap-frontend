@@ -5,6 +5,16 @@ import { stringify } from 'query-string';
 
 import axios from 'axios'
 
+function getNamespace(resource) {
+  const namespaces = {
+    users: 'user',
+    resources: 'resource',
+    houses: 'house',
+    orgs: 'org',
+  }
+  return namespaces[resource]
+}
+
 export default (baseUrl) => {
   return {
     getList: (resource, params) => {
@@ -16,10 +26,13 @@ export default (baseUrl) => {
         filter: JSON.stringify(params.filter),
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`;
-      const { token } = localStorage.getItem('token')
-      const headers = {
-        'Authorization': token,
-        // 'Access-Control-Expose-Headers': 'X-Total-Count'
+      let headers = {}
+      if (resource === 'houses') {
+        const token = localStorage.getItem('token')
+        headers = {
+          'Authorization': token,
+          // 'Access-Control-Expose-Headers': 'X-Total-Count'
+        }
       }
       console.log(resource, params)
       
@@ -28,7 +41,7 @@ export default (baseUrl) => {
         console.log('GET LIST :: ', res)
         return {
           data: res.data.data,
-          total: 1,
+          total: res.data.data.length,
         }
       })
       
@@ -54,21 +67,27 @@ export default (baseUrl) => {
     
     
     getMany: (resource, params) => {
-      const query = {
-        filter: JSON.stringify({ id: params.ids }),
-      };
-      const url = `${baseUrl}/${resource}?${stringify(query)}`;
-      const token = localStorage.getItem('token')
-      const headers = {
-        'Authorization': token,
-        // 'Access-Control-Expose-Headers': 'X-Total-Count'
+      try {
+        const query = {
+          filter: JSON.stringify({ id: params.ids }),
+        };
+        const url = `${baseUrl}/${resource}?${stringify(query)}`;
+        let headers = {}
+        if (resource === 'houses') {
+          const token = localStorage.getItem('token')
+          headers = {
+            'Authorization': token,
+            // 'Access-Control-Expose-Headers': 'X-Total-Count'
+          }
+        }
+        return axios.get(url, { headers })
+        .then(res => {
+          console.log('GET MANY :: ', res)
+          return { data: res.data.data, total: res.data.data.length }
+        })
+      } catch(err) {
+        console.error('No permissions to fetch this resource')
       }
-      // return httpClient(url).then(({ json }) => ({ data: json }));
-      return axios.get(url, { headers })
-      .then(res => {
-        console.log('GET MANY :: ', res)
-        return { data: res.data }
-      })
     },
     
     getManyReference: (resource, params) => {
@@ -84,31 +103,31 @@ export default (baseUrl) => {
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`;
       
-      // return httpClient(url).then(({ headers, json }) => ({
-      //   data: json,
-      //   total: parseInt(headers.get('content-range').split('/').pop(), 10),
-      // }));
       return axios.get(url)
       .then(res => {
         console.log('GET MANY REFERENCE :: ', res)
         return {
-          data: res.data,
-          // FIXME
-          total: 1
+          data: res.data.data,
+          total: res.data.data.length
         }
       })
     },
     
     update: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`;
-      // httpClient(`${baseUrl}/${resource}/${params.id}`, {
-      //   method: 'PUT',
-      //   body: JSON.stringify(params.data),
-      // }).then(({ json }) => ({ data: json })),
-      axios.put(url, { data: JSON.stringify(params.data) })
+      const token = localStorage.getItem('token')
+      const headers = {
+        Authorization: token
+      }
+      return axios({
+        method: 'PUT',
+        url,
+        headers,
+        data: { [getNamespace(resource)]: params.data }
+      })
       .then(res => {
         console.log('UPDATE :: ', res)
-        return { data: res.data }
+        return { data: res.data.data }
       })
     },
     
@@ -116,15 +135,20 @@ export default (baseUrl) => {
       const query = {
         filter: JSON.stringify({ id: params.ids}),
       };
+      const token = localStorage.getItem('token')
+      const headers = {
+        Authorization: token
+      }
       const url = `${baseUrl}/${resource}?${stringify(query)}`
-      // return httpClient(`${baseUrl}/${resource}?${stringify(query)}`, {
-      //   method: 'PUT',
-      //   body: JSON.stringify(params.data),
-      // }).then(({ json }) => ({ data: json }));
-      return axios(url)
+      return axios({
+        data: { [getNamespace(resource)]: params.data },
+        headers,
+        method: 'PUT',
+        url
+      })
       .then(res => {
         console.log('UPDATE MANY :: ', res)
-        return { data: res.data }
+        return { data: res.data.data }
       })
     },
     
@@ -138,7 +162,7 @@ export default (baseUrl) => {
         method: 'POST',
         url,
         headers,
-        data: { resource: params.data }
+        data: { [getNamespace(resource)]: params.data }
       })
       .then(res => {
         console.log('CREATE :: ', res)
@@ -148,13 +172,18 @@ export default (baseUrl) => {
     
     delete: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`
-      // httpClient(`${baseUrl}/${resource}/${params.id}`, {
-      //   method: 'DELETE',
-      // }).then(({ json }) => ({ data: json })),
-      axios.delete(url)
+      const token = localStorage.getItem('token')
+      const headers = {
+        Authorization: token
+      }
+      axios({
+        method: 'DELETE',
+        headers,
+        url,
+      })
       .then(res => {
         console.log('DELETE :: ', res)
-        return { data: res.data }
+        return { data: res.data.data }
       })
     },
     
@@ -163,16 +192,12 @@ export default (baseUrl) => {
         filter: JSON.stringify({ id: params.ids}),
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`
-      // return httpClient(`${baseUrl}/${resource}?${stringify(query)}`, {
-      //   method: 'DELETE',
-      //   body: JSON.stringify(params.data),
-      // }).then(({ json }) => ({ data: json }));
       axios.delete(url, {
         data: JSON.stringify(params.data)
       })
       .then(res => {
         console.log('DELETE MANY :: ', res)
-        return { data: res.data }
+        return { data: res.data.data }
       })
     }
   };
