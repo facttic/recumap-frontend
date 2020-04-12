@@ -15,6 +15,9 @@ function getNamespace(resource) {
   return namespaces[resource]
 }
 
+// houses is an authenticated service on those requests that use whitelist
+const whitelist = ['orgs', 'resources']
+
 export default (baseUrl) => {
   return {
     getList: (resource, params) => {
@@ -31,7 +34,6 @@ export default (baseUrl) => {
         const token = localStorage.getItem('token')
         headers = {
           'Authorization': token,
-          // 'Access-Control-Expose-Headers': 'X-Total-Count'
         }
       }
       console.log(resource, params)
@@ -44,12 +46,6 @@ export default (baseUrl) => {
           total: res.data.data.length,
         }
       })
-      
-      // return httpClient(url, { headers })
-      // .then(({ headers, json }) => ({
-      //   data: json,
-      //   total: parseInt(headers.get('X-Total-Count').split('/').pop(), 10),
-      // }));
     },
     
     getOne: (resource, params) => {
@@ -58,14 +54,14 @@ export default (baseUrl) => {
       const headers = {
         'Authorization': token
       }
+
       return axios.get(url, headers)
       .then(res => {
         console.log('GET ONE :: ', res)
         return { data: res.data.data }
       })
     },
-    
-    
+
     getMany: (resource, params) => {
       try {
         const query = {
@@ -73,11 +69,10 @@ export default (baseUrl) => {
         };
         const url = `${baseUrl}/${resource}?${stringify(query)}`;
         let headers = {}
-        if (resource === 'houses') {
+        if (whitelist.indexOf(resource) !== -1) {
           const token = localStorage.getItem('token')
           headers = {
             'Authorization': token,
-            // 'Access-Control-Expose-Headers': 'X-Total-Count'
           }
         }
         return axios.get(url, { headers })
@@ -119,6 +114,7 @@ export default (baseUrl) => {
       const headers = {
         Authorization: token
       }
+
       return axios({
         method: 'PUT',
         url,
@@ -135,11 +131,13 @@ export default (baseUrl) => {
       const query = {
         filter: JSON.stringify({ id: params.ids}),
       };
+      const url = `${baseUrl}/${resource}?${stringify(query)}`
+
       const token = localStorage.getItem('token')
       const headers = {
         Authorization: token
       }
-      const url = `${baseUrl}/${resource}?${stringify(query)}`
+
       return axios({
         data: { [getNamespace(resource)]: params.data },
         headers,
@@ -154,10 +152,12 @@ export default (baseUrl) => {
     
     create: (resource, params) => {
       const url = `${baseUrl}/${resource}`
+
       const token = localStorage.getItem('token')
       const headers = {
         Authorization: token
       }
+
       return axios({
         method: 'POST',
         url,
@@ -172,18 +172,20 @@ export default (baseUrl) => {
     
     delete: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`
+
       const token = localStorage.getItem('token')
       const headers = {
         Authorization: token
       }
-      axios({
+
+      return axios({
         method: 'DELETE',
         headers,
         url,
       })
       .then(res => {
         console.log('DELETE :: ', res)
-        return { data: res.data.data }
+        return { data: { id: params.id } }
       })
     },
     
@@ -192,7 +194,8 @@ export default (baseUrl) => {
         filter: JSON.stringify({ id: params.ids}),
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`
-      axios.delete(url, {
+
+      return axios.delete(url, {
         data: JSON.stringify(params.data)
       })
       .then(res => {
