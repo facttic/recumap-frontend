@@ -6,8 +6,8 @@ export const OrgList = props => (
         <Datagrid>
             <TextField source="name" />
             <TextField source="description" />
+            <TextField source="address" />
             <BooleanField source="public" />
-            <TextField source="demographics" />
         </Datagrid>
     </List>
 );
