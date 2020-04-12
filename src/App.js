@@ -3,7 +3,7 @@ import './App.css';
 
 import { Admin, Resource } from 'react-admin';
 
-import { HousesList } from './components/Houses';
+import { HouseEdit, HouseList, HouseShow } from './components/Houses';
 import {
   ResourceList,
   ResourcePost,
@@ -26,7 +26,12 @@ const App = () => (
     dashboard={PrivateHome}
     layout={AppLayout}
   >
-    <Resource name="houses" list={HousesList} />
+    <Resource
+      name="houses"
+      edit={HouseEdit}
+      list={HouseList}
+      show={HouseShow}
+    />
     <Resource name="orgs" list={OrgList} />
     <Resource
       name="resources"
