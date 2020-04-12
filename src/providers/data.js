@@ -1,8 +1,4 @@
-// import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
-// const httpClient = fetchUtils.fetchJson;
-// console.log('http client', httpClient)
-
 import axios from 'axios'
 
 function getNamespace(resource) {
@@ -36,8 +32,7 @@ export default (baseUrl) => {
           'Authorization': token,
         }
       }
-      console.log(resource, params)
-      
+
       return axios.get(url, { headers })
       .then(res => {
         console.log('GET LIST :: ', res)
@@ -47,7 +42,7 @@ export default (baseUrl) => {
         }
       })
     },
-    
+
     getOne: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`
       const token = localStorage.getItem('token')
@@ -84,7 +79,7 @@ export default (baseUrl) => {
         console.error('No permissions to fetch this resource')
       }
     },
-    
+
     getManyReference: (resource, params) => {
       const { page, perPage } = params.pagination;
       const { field, order } = params.sort;
@@ -97,7 +92,7 @@ export default (baseUrl) => {
         }),
       };
       const url = `${baseUrl}/${resource}?${stringify(query)}`;
-      
+
       return axios.get(url)
       .then(res => {
         console.log('GET MANY REFERENCE :: ', res)
@@ -107,7 +102,7 @@ export default (baseUrl) => {
         }
       })
     },
-    
+
     update: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`;
       const token = localStorage.getItem('token')
@@ -126,7 +121,7 @@ export default (baseUrl) => {
         return { data: res.data.data }
       })
     },
-    
+
     updateMany: (resource, params) => {
       const query = {
         filter: JSON.stringify({ id: params.ids}),
@@ -149,7 +144,7 @@ export default (baseUrl) => {
         return { data: res.data.data }
       })
     },
-    
+
     create: (resource, params) => {
       const url = `${baseUrl}/${resource}`
 
@@ -169,7 +164,7 @@ export default (baseUrl) => {
         return { data: res.data.data }
       })
     },
-    
+
     delete: (resource, params) => {
       const url = `${baseUrl}/${resource}/${params.id}`
 
@@ -188,19 +183,26 @@ export default (baseUrl) => {
         return { data: { id: params.id } }
       })
     },
-    
-    deleteMany: (resource, params) => {
-      const query = {
-        filter: JSON.stringify({ id: params.ids}),
-      };
-      const url = `${baseUrl}/${resource}?${stringify(query)}`
 
-      return axios.delete(url, {
-        data: JSON.stringify(params.data)
+    deleteMany: (resource, params) => {
+      const token = localStorage.getItem('token')
+      const headers = {
+        Authorization: token
+      }
+
+      const promises = params.ids.map(id => {
+        return new Promise((resolve, reject) => {
+          const url = `${baseUrl}/${resource}/${id}`
+          resolve(
+            axios({ method: 'DELETE', headers, url})
+            .then(res => id)
+          )
+        })
       })
-      .then(res => {
-        console.log('DELETE MANY :: ', res)
-        return { data: res.data.data }
+      console.log('DELETE MANY ::: ', resource, params)
+      return Promise.all(promises)
+      .then(values => {
+        return { data: values }
       })
     }
   };
