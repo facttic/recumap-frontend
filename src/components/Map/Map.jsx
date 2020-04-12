@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Map.css';
 import L from 'leaflet';
 import LCG from 'leaflet-control-geocoder';
@@ -17,10 +17,14 @@ const firstNode = {
 }
 
 const NodesMap = props => {
-    const { nodeList } = [] | props;
+    const { nodeList } = props;
     const [nodes, setNodes] = useState([firstNode]);
     const [actualNode, setActualNode] = useState();
     
+    useEffect(() => {
+        setNodes(nodeList)
+    }, [])
+
     const map = React.createRef();
 
     const parseNodeAddress = (position, callback) => {
@@ -51,6 +55,7 @@ const NodesMap = props => {
     
     L.Marker.prototype.options.icon = DefaultIcon;
 
+    
  
     return (
             <div>

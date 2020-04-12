@@ -4,6 +4,7 @@ import { Authenticated } from 'react-admin';
 import PrivateHome from './components/PrivateHome'
 import PublicHome from './components/PublicHome'
 import NodesMap from './components/Map/Map'
+import ResourcesMap from './components/Resources/ResourcesMap'
 
 export default [
     <Route
@@ -16,5 +17,5 @@ export default [
     />,
     <Route exact path="/" component={PublicHome} />,
     <Route exact path="/nodesmap" component={NodesMap} />,
-    <Route exact path="/resources/map" component={NodesMap} />,
+    <Route exact path="/resources/map" component={ResourcesMap} />,
 ];
