@@ -13,9 +13,9 @@ import SubMenu from "./SubMenu";
 
 const Menu = props => {
   const { onMenuClick, open } = props;
-  const [menuUsuarios, setMenuUsuarios] = useState(true);
   const [menuMapa, setMenuMapa] = useState(true);
   const [menuRecursos, setMenuRecursos] = useState(true);
+  const [orgsMenu, setOrgsMenu] = useState(true);
 
   return (
     <div>
@@ -34,20 +34,7 @@ const Menu = props => {
         />
          <MenuItemLink
           to="/resources/map"
-          primaryText="Recursos"
-          onClick={onMenuClick}
-        />
-      </SubMenu>
-      <SubMenu
-        handleToggle={() => setMenuUsuarios(!menuUsuarios)}
-        isOpen={menuUsuarios}
-        sidebarIsOpen={open}
-        icon={<Face />}
-        name="Usuarios"
-      >
-        <MenuItemLink
-          to="/users"
-          primaryText="Administrador"
+          primaryText="Mapa de Recursos"
           onClick={onMenuClick}
         />
       </SubMenu>
@@ -70,8 +57,8 @@ const Menu = props => {
         />
       </SubMenu>
       <SubMenu
-        handleToggle={() => setMenuMapa(!menuMapa)}
-        isOpen={menuMapa}
+        handleToggle={() => setOrgsMenu(!orgsMenu)}
+        isOpen={orgsMenu}
         sidebarIsOpen={open}
         name="Organizaciones"
         icon={<MapIcon />}
