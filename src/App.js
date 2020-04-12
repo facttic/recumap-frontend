@@ -7,7 +7,8 @@ import { PointsList } from './components/Points';
 import {
   ResourceList,
   ResourcePost,
-  ResourceEdit
+  ResourceEdit,
+  ResourceShow
 } from './components/Resources';
 import { UserList } from './components/Users';
 import { OrgList } from './components/Orgs';
@@ -32,6 +33,7 @@ const App = () => (
       list={ResourceList}
       edit={ResourceEdit}
       create={ResourcePost}
+      show={ResourceShow}
     />
   </Admin>
 );
