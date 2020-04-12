@@ -48,7 +48,7 @@ export default (baseUrl) => {
       return axios.get(url, headers)
       .then(res => {
         console.log('GET ONE :: ', res)
-        return { data: res.data }
+        return { data: res.data.data }
       })
     },
     
@@ -130,16 +130,19 @@ export default (baseUrl) => {
     
     create: (resource, params) => {
       const url = `${baseUrl}/${resource}`
-      // httpClient(`${baseUrl}/${resource}`, {
-      //   method: 'POST',
-      //   body: JSON.stringify(params.data),
-      // }).then(({ json }) => ({
-      //   data: { ...params.data, id: json.id },
-      // })),
-      axios.post(url, { data: JSON.stringify(params.data) })
+      const token = localStorage.getItem('token')
+      const headers = {
+        Authorization: token
+      }
+      return axios({
+        method: 'POST',
+        url,
+        headers,
+        data: { resource: params.data }
+      })
       .then(res => {
         console.log('CREATE :: ', res)
-        return { data: { ...params.data, id: res.id } }
+        return { data: res.data.data }
       })
     },
     
