@@ -46,7 +46,7 @@ const Menu = props => {
         icon={<MapIcon />}
       >
         <MenuItemLink
-          to="/points"
+          to="/houses"
           primaryText="Hogares"
           onClick={onMenuClick}
         />

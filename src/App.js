@@ -3,19 +3,20 @@ import './App.css';
 
 import { Admin, Resource } from 'react-admin';
 
-import { PointsList } from './components/Points';
+import { HousesList } from './components/Houses';
 import {
   ResourceList,
   ResourcePost,
   ResourceEdit,
   ResourceShow
 } from './components/Resources';
-import { UserList } from './components/Users';
+// import { UserList } from './components/Users';
 import { OrgList } from './components/Orgs';
 import customRoutes from './customRoutes'
 import PrivateHome from './components/PrivateHome'
 import AppLayout from './AppLayout'
 import { AuthProvider, DataProvider } from './providers'
+
 
 const App = () => (
   <Admin
@@ -25,8 +26,7 @@ const App = () => (
     dashboard={PrivateHome}
     layout={AppLayout}
   >
-    <Resource name="users" list={UserList} />
-    <Resource name="Puntos" list={PointsList} />
+    <Resource name="houses" list={HousesList} />
     <Resource name="orgs" list={OrgList} />
     <Resource
       name="resources"
