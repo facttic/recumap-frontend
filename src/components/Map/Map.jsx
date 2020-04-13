@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Map.css';
 import L from 'leaflet';
+import LCG from 'leaflet-control-geocoder'; //necesaria
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer, Marker, Tooltip } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -10,7 +11,7 @@ import NodeData from '../Nodes/NodesData'
 
 const NodesMap = props => {
     const { nodeList } = props;
-    const [nodes, setNodes] = useState(nodeList);
+    const [nodes, setNodes] = useState([]);
     const [actualNode, setActualNode] = useState();
     
     useEffect(() => {

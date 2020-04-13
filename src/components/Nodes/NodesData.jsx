@@ -20,14 +20,6 @@ const NodesData = props => {
                     <CardContent>
                       <span>{addressNode}</span>
                     </CardContent>
-                    <CardActions>
-                       <Button size="small" color="primary">
-                          Edit
-                      </Button>
-                      <Button size="small" color="primary">
-                          Delete
-                      </Button>
-                   </CardActions>
                 </Card>
                 
             </div>
