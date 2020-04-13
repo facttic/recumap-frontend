@@ -10,8 +10,8 @@ import {
   SimpleShowLayout,
   TextField,
   TextInput,
-  NumberInput,
-  BooleanInput
+  BooleanInput,
+  NumberInput
 } from 'react-admin';
 
 export const HouseList = props => (
