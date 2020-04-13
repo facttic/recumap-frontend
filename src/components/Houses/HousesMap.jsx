@@ -11,10 +11,10 @@ const HousesMap = () => {
 
     async function fetchList(resource) {
         const url = `${baseUrl}/${resource}`;
-        const { token } = localStorage.getItem('token')
+        const token   = localStorage.token;
         const headers = {
               'Authorization': token,
-              // 'Access-Control-Expose-Headers': 'X-Total-Count'
+              'Access-Control-Expose-Headers': 'X-Total-Count'
             }
         await axios.get(url, { headers })
             .then(res => {

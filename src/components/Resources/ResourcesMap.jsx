@@ -12,10 +12,7 @@ const ResourcesMap = () => {
     async function fetchList(resource) {
         const url = `${baseUrl}/${resource}`;
         const { token } = localStorage.getItem('token')
-        const headers = {
-              'Authorization': token,
-              // 'Access-Control-Expose-Headers': 'X-Total-Count'
-            }
+        const headers = {}
         await axios.get(url, { headers })
             .then(res => {
               console.log('GET LIST :: ', res)
