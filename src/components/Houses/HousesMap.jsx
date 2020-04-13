@@ -32,7 +32,7 @@ const HousesMap = () => {
                 <Card>
                     <CardHeader title="Mapa de hogares"/>
                 </Card>
-                <NodesMap nodeList={houses}></NodesMap>
+                <NodesMap nodeType='house' nodeList={houses}></NodesMap>
               
             </div>
         );

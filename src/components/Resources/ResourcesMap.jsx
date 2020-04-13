@@ -3,7 +3,7 @@ import { baseUrl } from '../../providers/index'
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios'
 import { Card, CardHeader } from '@material-ui/core';
-import NodesMap from '../Map/Map'
+import NodesMap from '../Map/Map';
 
 const ResourcesMap = () => {
     
@@ -29,7 +29,7 @@ const ResourcesMap = () => {
                 <Card>
                     <CardHeader title="Mapa de recursos"/>
                 </Card>
-                <NodesMap nodeList={resources}></NodesMap>
+                <NodesMap nodeType='resource' nodeList={resources}></NodesMap>
               
             </div>
         );

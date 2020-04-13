@@ -10,7 +10,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import NodeData from '../Nodes/NodesData'
 
 const NodesMap = props => {
-    const { nodeList } = props;
+    const { nodeType, nodeList } = props;
     const [nodes, setNodes] = useState([]);
     const [actualNode, setActualNode] = useState();
     
@@ -80,7 +80,7 @@ const NodesMap = props => {
                     )}
                 </Map>
                 { actualNode && (
-                    <NodeData node={actualNode} parseAddressFunction={parseNodeAddress}></NodeData>
+                    <NodeData formtype={nodeType} node={actualNode} parseAddressFunction={parseNodeAddress}></NodeData>
                   ) 
                 }
             </div>
