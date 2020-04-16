@@ -1,39 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Map.css';
 import L from 'leaflet';
-import LCG from 'leaflet-control-geocoder';
-
+import LCG from 'leaflet-control-geocoder'; //necesaria
 import 'leaflet/dist/leaflet.css';
 import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import { Card, CardContent } from '@material-ui/core';
 import NodeData from '../Nodes/NodesData'
 
-const firstNode = {
-    geo: { lat: -34.586018936001786, lng: -58.48846435546876 },
-    name: 'name1'
-}
-
 const NodesMap = props => {
-    const { nodeList } = [] | props;
-    const [nodes, setNodes] = useState([firstNode]);
+    const { nodeType, nodeList } = props;
+    const [nodes, setNodes] = useState([]);
     const [actualNode, setActualNode] = useState();
     
+    useEffect(() => {
+        setNodes(nodeList)
+    }, [nodeList])
+
     const map = React.createRef();
 
     const parseNodeAddress = (position, callback) => {
+        const geo = {lat: position.lat, lng: position.long};
         const geocoder = L.Control.Geocoder.nominatim();
         let address;
-        geocoder.reverse(position.geo, 13, results => {
+        geocoder.reverse(geo, 10, results => {
             let r = results[0];
             address = r.name
             callback(address)
         }) 
     }
-
-    
 
     // const addMarker = (e) => {
     //     // markers.pop();
@@ -51,6 +47,7 @@ const NodesMap = props => {
     
     L.Marker.prototype.options.icon = DefaultIcon;
 
+    
  
     return (
             <div>
@@ -72,7 +69,7 @@ const NodesMap = props => {
 
                          <Marker 
                              key={`marker-${idx}`}
-                             position={position.geo} 
+                             position={[position.lat, position.long]} 
                              onClick={() => { 
                                 setActualNode(position);
                              }}>
@@ -83,7 +80,7 @@ const NodesMap = props => {
                     )}
                 </Map>
                 { actualNode && (
-                    <NodeData node={actualNode} parseAddressFunction={parseNodeAddress}></NodeData>
+                    <NodeData formtype={nodeType} node={actualNode} parseAddressFunction={parseNodeAddress}></NodeData>
                   ) 
                 }
             </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Button, CardActions, CardHeader } from '@material-ui/core';
+import { Card, CardContent, Typography, CardHeader } from '@material-ui/core';
 
 const NodesData = props => {
 
+    const { formType } = props;
     const [node, setNode] = useState(props.node);
     const [addressNode, setAddressNode] = useState();
     
@@ -11,28 +12,63 @@ const NodesData = props => {
     useEffect(() => {
         setNode(props.node)
         parser(node, setAddressNode)
+        console.log(node)
     }, [props.node])
 
-    return (
+    const renderResources = () => {
+        return (
             <div>
                 <Card>
                     <CardHeader title={node.name}/>
                     <CardContent>
-                      <span>{addressNode}</span>
+                        <Typography color="textSecondary">
+                            {node.responsible_name}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            {node.responsible_phone}
+                        </Typography> 
+                        <Typography variant="body2" component="p">
+                            {addressNode}
+                        </Typography> 
+                        <Typography variant="body2" component="p">
+                            {node.address_locality}
+                        </Typography>   
                     </CardContent>
-                    <CardActions>
-                       <Button size="small" color="primary">
-                          Edit
-                      </Button>
-                      <Button size="small" color="primary">
-                          Delete
-                      </Button>
-                   </CardActions>
                 </Card>
                 
             </div>
         );
     }
 
+    const renderHouses = () => {
+        return (
+            <div>
+                 <Card>
+                    <CardHeader title={node.responsible_name}/>
+                    <CardContent>
+                        <Typography variant="body2" component="p">
+                            {node.responsible_phone}
+                        </Typography> 
+                        <Typography variant="body2" component="p">
+                            {addressNode}
+                        </Typography> 
+                        <Typography variant="body2" component="p">
+                            {node.address_locality}
+                        </Typography>   
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    return (
+         <div>
+            { formType === 'house'       
+              ? renderHouses()
+              : renderResources()      
+            }
+         </div>
+    )
+}
 
 export default NodesData;
